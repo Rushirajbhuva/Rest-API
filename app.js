@@ -20,7 +20,7 @@ mongoose
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//create Product POST Product
+//create Product POST Product OK
 
 const productSchema = mongoose.Schema({
   Name: String,
@@ -28,18 +28,19 @@ const productSchema = mongoose.Schema({
   Price: Number,
 });
 
-//Read Product
+//Read Product OK
 
-app.get('/getapi',async (req, res) => {
+app.get('/get/product',async (req, res) => {
   const product = await Product.find();
   
-  res.json({ success: true,product });
+  res.json({ success: true,
+    product });
 });
-
 const Product = new mongoose.model("products", productSchema);
-//POST REQUEST
-app.post("/postapi", (req, res) => {
-  //console.log("line-33");
+
+//POST REQUEST OK
+
+app.post('/post/product/:id', (req, res) => {
   const product = Product.create(req.body);
 
   res.status(201).json({
@@ -49,12 +50,16 @@ app.post("/postapi", (req, res) => {
 });
 
 
-//UpdateProduct
-app.put('/update/one',async(req,res)=>{
+//UpdateProduct Ok
+
+app.put('/update/one/:id',async(req,res)=>{
   
-  let product = await Product.findById(req.params.id,req.body,{new:true,
-    useFindAndModify:false,
-  runvalidator:true});
+ let product = await Product.findById(req.params.id);
+
+ product = await Product.findByIdAndUpdate(req.params.id,req.body,{new:true,
+          useFindAndModify:true,
+            runValidators:true
+})
   if(!product){
     return res.status(500).json({
       success:false,
@@ -69,19 +74,18 @@ app.put('/update/one',async(req,res)=>{
   product = await Product.findByIdAndUpdate()
 })
 
+//deleteApi 
 
+app.delete('/delete/product/:id', async (req, res) => {
 
-//deleteApi
-app.delete("/deleteapi:id", async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  let product = await Product.findById(req.params.id);
 
-  if(!product){
-    return res.status(500).json({
-      success:false,
-      message:"Product not faound"
-    })
-  }
-
+  // if(!product){
+  //   return res.status(500).json({
+  //     success:true,
+  //     message:"Product not faound"
+  //   })
+  // }
     await product.remove();
 
     res.status(200).json({
