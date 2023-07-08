@@ -40,7 +40,7 @@ const Product = new mongoose.model("products", productSchema);
 
 //POST REQUEST OK
 
-app.post('/post/product/:id', (req, res) => {
+app.post('/post/product', (req, res) => {
   const product = Product.create(req.body);
 
   res.status(201).json({
@@ -78,7 +78,7 @@ app.put('/update/one/:id',async(req,res)=>{
 
 app.delete('/delete/product/:id', async (req, res) => {
 
-  let product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id);
 
   // if(!product){
   //   return res.status(500).json({
