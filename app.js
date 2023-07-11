@@ -78,7 +78,7 @@ app.put('/update/one/:id',async(req,res)=>{
 
 app.delete('/delete/product/:id', async (req, res) => {
 
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findByIdAndRemove(req.params.id);
 
   // if(!product){
   //   return res.status(500).json({
@@ -86,7 +86,7 @@ app.delete('/delete/product/:id', async (req, res) => {
   //     message:"Product not faound"
   //   })
   // }
-    await product.remove();
+   // await product.remove();
 
     res.status(200).json({
       success:true,
